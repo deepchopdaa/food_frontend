@@ -1,30 +1,33 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 const Login = () => {
     const initialValues = {
-        fullname: "",
         email: "",
-        number: "",
-        gender: "",
+        password: "",
         remember: false,
     };
+
     const validationSchema = Yup.object({
-        fullname: Yup.string()
-            .required("fullname is requireds"),
         email: Yup.string()
             .email("Invalid email address")
             .required("Email is required"),
-        number: Yup.string()
-            .min(10, "phone number must be at least 10 digits")
-            .required("Phone number is required"),
-        gender: Yup.string()
-            .required("gender is required")
+        password: Yup.string()
+            .min(6, "Password must be at least 6 characters")
+            .required("Password is required"),
     });
 
     const onSubmit = (values) => {
         console.log("Form data", values);
+        axios.post("http://localhost:3000/login", values)
+            .then((res) => {
+                console.log(res);
+                console.log("data inserted sucesfull");
+            }).catch(
+                console.log("data is not inserted")
+            )
         // Add logic for submitting form data
     };
 
@@ -66,22 +69,6 @@ const Login = () => {
                                                 <Form>
                                                     <div className="mb-3">
                                                         <label className="mb-1">
-                                                            <strong>Full name</strong>
-                                                        </label>
-                                                        <Field
-                                                            type="text"
-                                                            name="fullname"
-                                                            className="form-control"
-                                                            placeholder="Enter your full name"
-                                                        />
-                                                        <ErrorMessage
-                                                            name="fullname"
-                                                            component="div"
-                                                            className="text-danger"
-                                                        />
-                                                    </div>
-                                                    <div className="mb-3">
-                                                        <label className="mb-1">
                                                             <strong>Email Address</strong>
                                                         </label>
                                                         <Field
@@ -94,42 +81,22 @@ const Login = () => {
                                                             name="email"
                                                             component="div"
                                                             className="text-danger"
-                                                        />
-                                                    </div>
-                                                    <div className="mb-3">
-                                                        <label className="mb-1">
-                                                            <strong>Phone NO</strong>
-                                                        </label>
-                                                        <Field
-                                                            type="number"
-                                                            name="number"
-                                                            className="form-control"
-                                                            placeholder="Enter your Phone number"
-                                                        />
-                                                        <ErrorMessage
-                                                            name="number"
-                                                            component="div"
-                                                            className="text-danger"
-                                                        />
-                                                    </div>
-                                                    <div className="mb-3">
-                                                        <label className="mb-1">
-                                                            <strong>gender</strong>
-                                                        </label>
-                                                        <Field
-                                                            type="radio"
-                                                            name="gender"
-                                                            className="form-control"
+
                                                             
                                                         />
+                                                    </div>
+                                                    <div className="mb-3">
+                                                        <label className="mb-1">
+                                                            <strong>Password</strong>
+                                                        </label>
                                                         <Field
-                                                            type="radio"
-                                                            name="gender"
+                                                            type="password"
+                                                            name="password"
                                                             className="form-control"
-                                                
+                                                            placeholder="Enter your password"
                                                         />
                                                         <ErrorMessage
-                                                            name="gender"
+                                                            name="password"
                                                             component="div"
                                                             className="text-danger"
                                                         />

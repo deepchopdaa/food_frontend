@@ -18,16 +18,16 @@ function App() {
   return (
     <div className="App">
       {/* <Profile/> */}
-     <Sidebar/>
+     {/* <Sidebar/>
       <Menu/>
       <Order/>
       <Review/>
       <Dashboard/>
       <Driver_order/>
       <Food_order/>
-      <Order_History/>
-      {/* <Login/>
-      <Register/> */}
+      <Order_History/> */}  
+      <Login/>
+      <Register/>
 
     </div>
   );
