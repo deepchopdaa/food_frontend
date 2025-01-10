@@ -1,9 +1,11 @@
 import React from "react";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 import { Formik, Form, Field, ErrorMessage, Value } from "formik";
 import * as Yup from "yup";
 
 const Register = () => {
+    
     const initialValues = {
         fullname: "",
         email: "",
@@ -42,15 +44,17 @@ const Register = () => {
                 .then((res) => {
                     console.log(res);
                     console.log("data inserted sucesfull");
-                }).catch(
+                }).catch((err)=>{
+                    console.log(err.response.data)
+                    let notify = () => toast(err.response.data);
+                    notify();
                     console.log("data is not inserted")
-                )
+        })
         } else {
             console.log("password are not match")
         }
     }
     // Add form submission logic here
-
     return (
         <>
             <div className="authincation">
@@ -93,6 +97,7 @@ const Register = () => {
                                                         <label className="mb-1">
                                                             <strong>Email Address</strong>
                                                         </label>
+                                                        {<ToastContainer/>}
                                                         <Field
                                                             type="email"
                                                             name="email"
