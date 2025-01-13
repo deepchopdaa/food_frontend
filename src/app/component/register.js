@@ -5,7 +5,7 @@ import { Formik, Form, Field, ErrorMessage, Value } from "formik";
 import * as Yup from "yup";
 
 const Register = () => {
-    
+
     const initialValues = {
         fullname: "",
         email: "",
@@ -34,24 +34,25 @@ const Register = () => {
         confirm: Yup.string()
             .min(8, "Password must be at least 8 characters")
             .required("Password is required"),
-
     });
-
     const onSubmit = (values) => {
         console.log("Form values:", values);
         if (values.password === values.confirm) {
             axios.post("http://localhost:3000/insert", values)
                 .then((res) => {
                     console.log(res);
+                    let notify = () => toast("user register successfully");
+                    notify();
                     console.log("data inserted sucesfull");
-                }).catch((err)=>{
-                    console.log(err.response.data)
+                }).catch((err) => {
+                    console.log(err.response.data);
                     let notify = () => toast(err.response.data);
                     notify();
-                    console.log("data is not inserted")
-        })
+                    console.log("data is not inserted");
+                })
         } else {
-            console.log("password are not match")
+            let notify = () => toast("password is not match");
+            notify();
         }
     }
     // Add form submission logic here
@@ -97,7 +98,7 @@ const Register = () => {
                                                         <label className="mb-1">
                                                             <strong>Email Address</strong>
                                                         </label>
-                                                        {<ToastContainer/>}
+                                                        {<ToastContainer />}
                                                         <Field
                                                             type="email"
                                                             name="email"
