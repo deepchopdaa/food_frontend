@@ -5,6 +5,10 @@ import { Formik, Form, Field, ErrorMessage, Value } from "formik";
 import * as Yup from "yup";
 
 const Register = () => {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 90fa1dccdae64d9a99f402ea2f9511324a08d083
     const initialValues = {
         fullname: "",
         email: "",
@@ -40,15 +44,25 @@ const Register = () => {
             axios.post("http://localhost:3000/insert", values)
                 .then((res) => {
                     console.log(res);
+                    let notify = () => toast("user register successfully");
+                    notify();
                     console.log("data inserted sucesfull");
                 }).catch((err) => {
+<<<<<<< HEAD
                     console.log(err.response.data)
                     let notify = () => toast(err.response.data);
                     notify();
                     console.log("data is not inserted")
+=======
+                    console.log(err.response.data);
+                    let notify = () => toast(err.response.data);
+                    notify();
+                    console.log("data is not inserted");
+>>>>>>> 90fa1dccdae64d9a99f402ea2f9511324a08d083
                 })
         } else {
-            console.log("password are not match")
+            let notify = () => toast("password is not match");
+            notify();
         }
     }
     // Add form submission logic here

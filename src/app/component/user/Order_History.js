@@ -290,7 +290,7 @@ const Order_History = () => {
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            <p class="mb-0">June 1, 2020, 08:22 AM</p>
+                                                            <p class="mb-0">June 1, 2020, 08:22 AM</p>  
                                                         </div>
                                                     </td>
                                                     <td>

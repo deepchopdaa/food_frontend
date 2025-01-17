@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
     const initialValues = {
@@ -19,16 +20,28 @@ const Login = () => {
             .required("Password is required"),
     });
 
-    
+
     const onSubmit = (values) => {
+
+
         console.log("Form data", values);
         axios.post("http://localhost:3000/login", values)
             .then((res) => {
                 console.log(res);
-                console.log("data inserted sucesfull");
-            }).catch(
+                if (!res.data.token) {
+                    let notify = () => toast(res.data)  
+                    notify()
+                } else {
+                    localStorage.setItem("token", res.data.token)
+                    let notify = () => toast("Login sucessfully")
+                    notify()
+                    console.log("data inserted sucesfull");
+                }
+            }).catch((err) => {
                 console.log("data is not inserted")
-            )
+
+            })
+
         // Add logic for submitting form data
     };
 
@@ -132,6 +145,7 @@ const Login = () => {
                                                         >
                                                             Sign Me In
                                                         </button>
+                                                        <ToastContainer />
                                                     </div>
                                                 </Form>
                                             )}
