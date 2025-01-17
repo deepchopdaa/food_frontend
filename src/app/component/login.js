@@ -120,6 +120,7 @@ const Login = () => {
                                                             <div className="form-check custom-checkbox ms-1">
                                                                 <Field
                                                                     type="checkbox"
+                                                                    
                                                                     name="remember"
                                                                     className="form-check-input"
                                                                     id="basic_checkbox_1"

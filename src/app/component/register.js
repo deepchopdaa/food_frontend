@@ -5,10 +5,6 @@ import { Formik, Form, Field, ErrorMessage, Value } from "formik";
 import * as Yup from "yup";
 
 const Register = () => {
-<<<<<<< HEAD
-=======
-
->>>>>>> 90fa1dccdae64d9a99f402ea2f9511324a08d083
     const initialValues = {
         fullname: "",
         email: "",
@@ -48,17 +44,10 @@ const Register = () => {
                     notify();
                     console.log("data inserted sucesfull");
                 }).catch((err) => {
-<<<<<<< HEAD
                     console.log(err.response.data)
                     let notify = () => toast(err.response.data);
                     notify();
                     console.log("data is not inserted")
-=======
-                    console.log(err.response.data);
-                    let notify = () => toast(err.response.data);
-                    notify();
-                    console.log("data is not inserted");
->>>>>>> 90fa1dccdae64d9a99f402ea2f9511324a08d083
                 })
         } else {
             let notify = () => toast("password is not match");

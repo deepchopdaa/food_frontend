@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage, Value } from "formik";
+import { ToastContainer, toast } from 'react-toastify';
 import * as Yup from "yup";
 const restrurent = () => {
     const initialValues = {
@@ -18,6 +19,17 @@ const restrurent = () => {
     })
     const onSubmit = (value) => {
         console.log(value)
+        axios.post("http://localhost:3000/addrestrurent", value)
+            .then((res) => {
+                console.log(res)
+                let notify = () => toast("restrurent register successfully");
+                notify();
+            }).catch((err) => {
+                console.log(err.response.data)
+                let notify = () => toast("restrurent registeration failed");
+                notify();
+                console.log("restrurent registeration failed");
+            })
     }
     return (
         <>

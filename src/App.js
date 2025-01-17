@@ -30,7 +30,7 @@ function App() {
       <Order_History/> */}
       {/* <Login/>
       <Register/> */}
-      <Restrurent />
+      {/* <Restrurent /> */}
       <Category />
 
     </div>
