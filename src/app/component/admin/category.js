@@ -18,7 +18,7 @@ const Category = () => {
         status: editCategory?.status || "active",
     };
 
-    const validationSchema = Yup.object({
+    const validationSchema = Yup.object({   
         category_name: Yup.string().required("Category name is required"),
         status: Yup.string().required("Status is required"),
     });
