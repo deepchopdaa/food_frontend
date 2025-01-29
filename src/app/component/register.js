@@ -1,8 +1,10 @@
 import React from "react";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
+import { Link } from "react-router";
 import { Formik, Form, Field, ErrorMessage, Value } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router";
 
 const Register = () => {
     const initialValues = {
@@ -13,7 +15,7 @@ const Register = () => {
         gender: "",
         confirm: "",
     };
-
+    const navigate = useNavigate("");
     const validationSchema = Yup.object({
         fullname: Yup.string()
             .min(3, "fullname must be at least 3 characters")
@@ -42,6 +44,7 @@ const Register = () => {
                     console.log(res);
                     let notify = () => toast("user register successfully");
                     notify();
+                    navigate("/")
                     console.log("data inserted sucesfull");
                 }).catch((err) => {
                     console.log(err.response.data)
@@ -229,10 +232,8 @@ const Register = () => {
                                             </Formik>
                                             <div className="new-account mt-3">
                                                 <p>
-                                                    Already have an account?{" "}
-                                                    <a className="text-primary" href="page-login.html">
-                                                        Sign in
-                                                    </a>
+                                                   
+                                                    <Link to='/'>  Already have an account?</Link>
                                                 </p>
                                             </div>
                                         </div>

@@ -2,7 +2,9 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { Link } from "react-router";
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from "react-router";
 
 const Login = () => {
     const initialValues = {
@@ -10,7 +12,7 @@ const Login = () => {
         password: "",
         remember: false,
     };
-
+    const navigate = useNavigate("")
     const validationSchema = Yup.object({
         email: Yup.string()
             .email("Invalid email address")
@@ -31,10 +33,12 @@ const Login = () => {
                 if (!res.data.token) {
                     let notify = () => toast(res.data)  
                     notify()
+                    
                 } else {
                     localStorage.setItem("token", res.data.token)
                     let notify = () => toast("Login sucessfully")
                     notify()
+                    navigate("/admin/")
                     console.log("data inserted sucesfull");
                 }
             }).catch((err) => {
@@ -153,11 +157,7 @@ const Login = () => {
                                         </Formik>
                                         <div className="text-center mt-3">
                                             <span>
-                                                Already Have An Account?
-                                                <a href="javascript:void(0);" className="text-primary">
-                                                    {" "}
-                                                    Sign in
-                                                </a>
+                                            <Link to='/register'>Do not have Account ?</Link>
                                             </span>
                                         </div>
                                     </div>

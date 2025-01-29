@@ -21,20 +21,18 @@ const Restrurent = () => {
     const [countries, setCountries] = useState([]);
     const [states1, setStates1] = useState([]);
     const [cities1, setCities1] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState('');
-    const [selectedState, setSelectedState] = useState('');
-    const [selectedCity, setSelectedCity] = useState('');
+    const [country_name1, setcountry_name1] = useState('');
+    const [state_name1, setstate_name1] = useState('');
+    const [city_name1, setcity_name1] = useState('');
     useEffect(() => {
         get();
-        cityget();
-        stateget();
         countryget();
     }, [])
 
     useEffect(() => {
-        console.log(selectedCountry)
+        console.log(country_name1)
 
-        axios.get(`http://localhost:3000/states/${selectedCountry}`)
+        axios.get(`http://localhost:3000/states/${country_name1}`)
             .then((response) => {
                 setStates1(response.data);
                 setCities1([]); // Clear cities
@@ -44,12 +42,12 @@ const Restrurent = () => {
                 console.error('Error fetching states:', error);
             });
 
-    }, [selectedCountry]);
+    }, [country_name1]);
 
     useEffect(() => {
-        console.log(selectedState)
-        if (selectedState) {
-            axios.get(`http://localhost:3000/cities/${selectedState}`)
+        console.log(state_name1)
+        if (state_name1) {
+            axios.get(`http://localhost:3000/cities/${state_name1}`)
                 .then((response) => {
                     setCities1(response.data);
                     console.log(response.data)
@@ -58,21 +56,11 @@ const Restrurent = () => {
                     console.error('Error fetching cities:', error);
                 });
         }
-    }, [selectedState]);
+    }, [state_name1]);
 
 
     /* api get */
-    const cityget = async () => {
-        let data = await axios.get("http://localhost:3000/cityget")
-        setcity(data.data);
-        console.log(data)
-    }
-
-    const stateget = async () => {
-        let data = await axios.get("http://localhost:3000/stateget");
-        setstate(data.data);
-        console.log(data.data)
-    }
+    
 
     const countryget = async () => {
         let data = await axios.get("http://localhost:3000/countryget")
@@ -81,7 +69,14 @@ const Restrurent = () => {
     }
 
     const get = async () => {
-        const resdata = await axios.get("http://localhost:3000/getrestrurent");
+        const token = localStorage.getItem("token")
+        console.log(token,"tokentoken")
+        const resdata = await axios.get("http://localhost:3000/getrestrurent", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        console.log(resdata,"resdataresdataresdataresdata")
         setdata(resdata.data);
         console.log(resdata.data)
     }
@@ -89,8 +84,15 @@ const Restrurent = () => {
     /* update api */
 
     const updatedata = async (value) => {
-        console.log(value)
-        const updateres = await axios.put(`http://localhost:3000/updaterestrurent/${id}`, value)
+        console.log("update reaquest data : ", value)
+        let { name, address, area, country_name, state_name, city_name } = value;
+        /* name = name,
+        address = address,
+        area = area, */
+        country_name = country_name1
+        state_name = state_name1
+        city_name = city_name1
+        const updateres = await axios.put(`http://localhost:3000/updaterestrurent/${id}`, { name, address, area, country_name, state_name, city_name })
         console.log(updateres);
         handleClose()
         get();
@@ -102,6 +104,9 @@ const Restrurent = () => {
         setname(values.name)
         setaddress(values.address)
         setarea(values.area)
+        setcountry_name1(values.country_name)
+        setstate_name1(values.state_name)
+        setcity_name1(values.city_name)
         handleShow();
     }
 
@@ -127,21 +132,21 @@ const Restrurent = () => {
             .required("address of restrurent is required"),
         area: Yup.string()
             .required("area of restrurent is required"),
-        country_name: Yup.string()
-            .required("country of restrurent is required"),
-        state_name: Yup.string()
-            .required("state of restrurent is required"),
-        city_name: Yup.string()
-            .required("city of restrurent is required"),
+        /*  country_name: Yup.string()
+             .required("country of restrurent is required"),
+         state_name: Yup.string()
+             .required("state of restrurent is required"),
+         city_name: Yup.string()
+             .required("city of restrurent is required"), */
     })
-    const onSubmit = (value) => {
-        console.log(value)
-        var { name, address, area } = value;
-        console.log(name,"fde");
-       
-        /* const payload = { name, address, area, country_name: selectedCountry, state_name: selectedState, city_name: selectedCity };
-        console.log(payload.city_name) */
-        axios.post("http://localhost:3000/addrestrurent", { name, address, area, country_name: selectedCountry, state_name: selectedState, city_name: selectedCity })
+    const onSubmit = async (values) => {
+        console.log(values);
+        console.log(country_name1)
+        let { name, address, area, country_name, state_name, city_name } = values;
+        country_name = country_name1
+        state_name = state_name1
+        city_name = city_name1
+        const insert = await axios.post("http://localhost:3000/addrestrurent", { name, address, area, country_name, state_name, city_name })
             .then((res) => {
                 console.log(res)
                 let notify = () => toast("restrurent register successfully");
@@ -153,6 +158,7 @@ const Restrurent = () => {
                 notify();
                 console.log("restrurent registeration failed");
             })
+        console.log(insert)
     }
     return (
         <>
@@ -160,37 +166,41 @@ const Restrurent = () => {
 
             <Table>
                 <thead>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Area</th>
-                    <th>City</th>
-                    <th>State</th>
-                    <th>Country</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Area</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Country</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {
                         data?.map((item) => (
-                            <tr key={item._id}>
-                                <td>{item.name}</td>
-                                <td>{item.address}</td>
-                                <td>{item.area}</td>
+                            <tr key={item?._id}>
+                                <td>{item?.name}</td>
+                                <td>{item?.address}</td>
+                                <td>{item?.area}</td>
+                                <td>{item?.country_name}</td>
+                                <td>{item?.state_name}</td>
+                                <td>{item?.city_name}</td>
                                 <td><Button onClick={() => selectReacord(item)}>Update</Button></td>
-                                <td><Button onClick={() => deletedata(item._id)}>Delete</Button></td>
+                                <td><Button onClick={() => deletedata(item?._id)}>Delete</Button></td>
                             </tr>
                         ))
                     }
                 </tbody>
             </Table>
 
-
             {/* restrurent add */}
             <h4 className="text-center mb-4">Restaurant</h4>
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-            /* onSubmit={onSubmit} */
+                onSubmit={onSubmit}
             >
                 <Form className='w-25 mx-auto' >
                     <div className="mb-3">
@@ -242,16 +252,17 @@ const Restrurent = () => {
                         />
                     </div>
 
-                    {/* Country Dropdown */}
                     <div className="mb-3">
-                        <label htmlFor="country" className="form-label">
+                        <label className="form-label">
                             Country
                         </label>
-                        <select
+                        <Field
+                            as="select"
                             id="country"
+                            name="country_name"
                             className="form-select"
-                            value={selectedCountry}
-                            onChange={(e) => setSelectedCountry(e.target.value)}
+                            value={country_name1}
+                            onChange={(e) => setcountry_name1(e.target.value)}
                         >
                             <option value="">Select a country</option>
                             {country.map((country) => (
@@ -259,19 +270,20 @@ const Restrurent = () => {
                                     {country.name}
                                 </option>
                             ))}
-                        </select>
+                        </Field>
                     </div>
 
-                    {/* State Dropdown */}
                     <div className="mb-3">
-                        <label htmlFor="state" className="form-label">
+                        <label className="form-label">
                             State
                         </label>
-                        <select
+                        <Field
+                            as="select"
                             id="state"
                             className="form-select"
-                            value={selectedState}
-                            onChange={(e) => setSelectedState(e.target.value)}
+                            name="state_name"
+                            value={state_name1}
+                            onChange={(e) => setstate_name1(e.target.value)}
                         >
                             <option value="">Select a state</option>
                             {states1.map((state) => (
@@ -279,19 +291,20 @@ const Restrurent = () => {
                                     {state.state_name}
                                 </option>
                             ))}
-                        </select>
+                        </Field>
                     </div>
 
-                    {/* City Dropdown */}
                     <div className="mb-3">
-                        <label htmlFor="city" className="form-label">
+                        <label className="form-label">
                             City
                         </label>
-                        <select
+                        <Field
+                            as="select"
                             id="city"
                             className="form-select"
-                            value={selectedCity}
-                            onChange={(e) => setSelectedCity(e.target.value)}
+                            name="city_name"
+                            value={city_name1}
+                            onChange={(e) => setcity_name1(e.target.value)}
                         >
                             <option value="">Select a city</option>
                             {cities1.map((city) => (
@@ -299,13 +312,11 @@ const Restrurent = () => {
                                     {city.city_name}
                                 </option>
                             ))}
-                        </select>
+                        </Field>
                     </div>
                     <div className="text-center">
                         <Button
                             type="submit"
-                            className="btn btn-primary btn-block shadow"
-                            onClick={onSubmit}
                         >
                             Add Restrurent
                         </Button>
@@ -324,7 +335,10 @@ const Restrurent = () => {
                         initialValues={{
                             name: name || "",
                             address: address || "",
-                            area: area || ""
+                            area: area || "",
+                            country_name: country_name1 || "",
+                            state_name: state_name1 || "",
+                            city_name: city_name1 || ""
                         }}
                         validationSchema={validationSchema}
                         onSubmit={updatedata}
@@ -336,6 +350,7 @@ const Restrurent = () => {
                                     type="text"
                                     name="name"
                                     className="form-control"
+                                    onChange={(e) => { setname(e.target.value) }}
                                 />
                                 <ErrorMessage name="name" component="div" className="text-danger" />
                             </div>
@@ -344,7 +359,7 @@ const Restrurent = () => {
                                 <Field
                                     type="text"
                                     name="address"
-                                    className="form-control"
+                                    className="form-control" onChange={(e) => { setaddress(e.target.value) }}
                                 />
                                 <ErrorMessage name="address" component="div" className="text-danger" />
                             </div>
@@ -353,9 +368,71 @@ const Restrurent = () => {
                                 <Field
                                     type="text"
                                     name="area"
-                                    className="form-control"
+                                    className="form-control" onChange={(e) => { setarea(e.target.value) }}
                                 />
                                 <ErrorMessage name="area" component="div" className="text-danger" />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">
+                                    Country
+                                </label>
+                                <Field
+                                    as="select"
+                                    id="country"
+                                    name="country_name"
+                                    className="form-select"
+                                    value={country_name1}
+                                    onChange={(e) => setcountry_name1(e.target.value)}
+                                >
+                                    <option value="">Select a country</option>
+                                    {country.map((country) => (
+                                        <option key={country._id} value={country._id}>
+                                            {country.name}
+                                        </option>
+                                    ))}
+                                </Field>
+                            </div>
+
+                            <div className="mb-3">
+                                <label className="form-label">
+                                    State
+                                </label>
+                                <Field
+                                    as="select"
+                                    id="state"
+                                    className="form-select"
+                                    name="state_name"
+                                    value={state_name1}
+                                    onChange={(e) => setstate_name1(e.target.value)}
+                                >
+                                    <option value="">Select a state</option>
+                                    {states1.map((state) => (
+                                        <option key={state._id} value={state._id}>
+                                            {state.state_name}
+                                        </option>
+                                    ))}
+                                </Field>
+                            </div>
+
+                            <div className="mb-3">
+                                <label className="form-label">
+                                    City
+                                </label>
+                                <Field
+                                    as="select"
+                                    id="city"
+                                    className="form-select"
+                                    name="city_name"
+                                    value={city_name1}
+                                    onChange={(e) => setcity_name1(e.target.value)}
+                                >
+                                    <option value="">Select a city</option>
+                                    {cities1.map((city) => (
+                                        <option key={city._id} value={city._id}>
+                                            {city.city_name}
+                                        </option>
+                                    ))}
+                                </Field>
                             </div>
                             <div className="text-center">
                                 <Button

@@ -1,25 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Outlet } from 'react-router-dom';
+import Restrurent from './component/admin/restrurent';
+import Category from './component/admin/category';
+import Login from './component/login';
+import Register from './component/register';
+import Logout from './component/Logout';
 
-const DashboardLight = () => <div>Dashboard Light</div>;
-const DashboardDark = () => <div>Dashboard Dark</div>;
-const FoodOrder = () => <div>Food Order</div>;
-const FavoriteMenu = () => <div>Favorite Menu</div>;
-const Message = () => <div>Message</div>;
-const OrderHistory = () => <div>Order History</div>;
-const Notification = () => <div>Notification</div>;
-const Bill = () => <div>Bill</div>;
-const Setting = () => <div>Setting</div>;
 
-const RestaurantDashboard = () => <div>Restaurant Dashboard</div>;
-const Menu = () => <div>Menu</div>;
-const Orders = () => <div>Orders</div>;
-const CustomerReviews = () => <div>Customer Reviews</div>;
-const RestroSetting = () => <div>Restaurant Setting</div>;
-
-const DeliverDashboard = () => <div>Driver Dashboard</div>;
-const DeliverOrders = () => <div>Driver Orders</div>;
-const Feedback = () => <div>Feedback</div>;
+const Admin = () => <> <div>Admin</div> <Outlet /> </>;
 
 const Sidebar = () => {
   return (
@@ -28,6 +16,22 @@ const Sidebar = () => {
         <div className="dlabnav-scroll">
           <p className="menu-title style-1">Main Menu</p>
           <ul className="metismenu" id="menu">
+
+            {/* admin route */}
+            <li>
+              <Link to="/admin/">
+                <i className="bi bi-grid"></i>
+                <span className="nav-text">Admin</span>
+              </Link>
+              <ul>
+                <li><Link to="admin/category">Category</Link></li>
+                <li><Link to="admin/restrurent">Restraurent</Link></li>
+                <li><Link to="logout">Logout</Link></li>
+              </ul>
+            </li>
+
+            {/* admin route */}
+
             <li>
               <Link to="/dashboard">
                 <i className="bi bi-grid"></i>
@@ -74,8 +78,21 @@ const Sidebar = () => {
       </div>
 
       <Routes>
+
+        {/* user */}
+
+        <Route path='/register' element={<Register/>}/>
+        
+        {/* Admin  */}
+        <Route path='/' element={<Login/>}></Route>
+
+        <Route path="/admin/" element={<Admin />}>
+          <Route path="restrurent" element={<Restrurent />}></Route>
+          <Route path="category" element={<Category />}></Route>
+        </Route>
+        <Route path='/logout' element={<Logout/>}></Route>
         {/* Dashboard Routes */}
-        <Route path="/dashboard/light" element={<DashboardLight />} />
+        {/* <Route path="/dashboard/light" element={<DashboardLight />} />
         <Route path="/dashboard/dark" element={<DashboardDark />} />
         <Route path="/dashboard/food-order" element={<FoodOrder />} />
         <Route path="/dashboard/favorite-menu" element={<FavoriteMenu />} />
@@ -83,19 +100,21 @@ const Sidebar = () => {
         <Route path="/dashboard/order-history" element={<OrderHistory />} />
         <Route path="/dashboard/notification" element={<Notification />} />
         <Route path="/dashboard/bill" element={<Bill />} />
-        <Route path="/dashboard/setting" element={<Setting />} />
+        <Route path="/dashboard/setting" element={<Setting />} /> */}
 
         {/* Restaurant Routes */}
-        <Route path="/restaurant/dashboard" element={<RestaurantDashboard />} />
+        {/* <Route path="/restaurant/dashboard" element={<Restrurent/>} />
         <Route path="/restaurant/menu" element={<Menu />} />
         <Route path="/restaurant/orders" element={<Orders />} />
         <Route path="/restaurant/reviews" element={<CustomerReviews />} />
-        <Route path="/restaurant/setting" element={<RestroSetting />} />
+        <Route path="/restaurant/setting" element={<RestroSetting />} /> */}
+
+
 
         {/* Drivers Routes */}
-        <Route path="/drivers/dashboard" element={<DeliverDashboard />} />
+        {/* <Route path="/drivers/dashboard" element={<DeliverDashboard />} />
         <Route path="/drivers/orders" element={<DeliverOrders />} />
-        <Route path="/drivers/feedback" element={<Feedback />} />
+        <Route path="/drivers/feedback" element={<Feedback />} /> */}
       </Routes>
     </Router>
   );

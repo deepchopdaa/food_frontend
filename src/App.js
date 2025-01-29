@@ -20,8 +20,8 @@ function App() {
   return (
     <div className="App">
       {/* <Profile/> */}
-      {/* <Sidebar/>
-      <Menu/>
+      <Sidebar/>
+      {/*<Menu/>
       <Order/>
       <Review/>
       <Dashboard/>
@@ -29,9 +29,9 @@ function App() {
       <Food_order/>
       <Order_History/> */}
       {/* <Login/>
-      <Register/> */}
+      <Register/> 
       <Restrurent />
-      {/* <Category /> */}
+      <Category />  */}
 
     </div>
   );
